@@ -1,0 +1,25 @@
+<div ng-init="initializeSever()">   
+    <servermodals></servermodals>
+    <errormodal></errormodal>
+    <serverprofile></serverprofile>
+    <div ng-show="displayAdmins" class="my-items">
+        <h1>List of "{{server.name}}" Admins</h1>
+        <div>
+            
+            <div id="mainlistcontainer" ng-repeat="user in admins" ng-show="show[$index]">
+                <userlistelement></userlistelement>
+                <button class="add remove-connection" title="Remove User from Server"type="button" ng-click="removeFromVM(user.id, $index)"></button>
+            </div>
+        </div>
+    </div>
+    <div ng-show="displayUser" class="my-items">
+        <h1>List of "{{server.name}}" Users</h1>
+        <div>
+           
+            <div id="mainlistcontainer" ng-repeat="user in users" ng-show="show[$index]">
+                <userlistelement></userlistelement>
+                <button class="add remove-connection" title="Remove User from Server"type="button" ng-click="removeFromVM(user.id, $index)"></button>
+            </div>
+        </div>
+    </div>
+</div>

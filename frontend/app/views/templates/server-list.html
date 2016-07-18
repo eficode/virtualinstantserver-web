@@ -1,0 +1,18 @@
+<a href="#/vmlist/{{server.id}}">
+    <div class="jumbotron">
+        <div class="row">
+            <div class="col-xs-6">
+                <div><img src="img/icon/VM.png" class="Usericon" /></div>
+                <div class="title">{{server.name | characters:18 :true}}</div>
+            </div>
+            <div class="col-xs-6">
+                <div class="row">
+                    <div class="content-title">{{server.typeId | characters:11 :true}}</div>
+                </div>
+                <div class="row">
+                    <div class="content">{{server.statusId | characters:16 :true}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</a>

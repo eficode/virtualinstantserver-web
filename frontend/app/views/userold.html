@@ -1,0 +1,53 @@
+<errormodal></errormodal>
+<div class="container">
+    <div class="row row-offcanvas row-offcanvas-right">
+        <div class="col-xs-12 col-sm-12">
+            <h1>List of all Users</h1>
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-3">
+            </div>
+            <div class="jumbotron" ng-repeat="user in listOfUsers">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div><img ng-src="{{ user.icon }}"></img>
+                            </div>
+                            <div class="title">{{user.username}}</div>
+                        </div>
+                        <div class="col-sm-9">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="content-title">First Name</div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="content">{{user.firstName}}</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="content-title">Last Name</div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="content">{{user.lastName}}</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="content-title">Role</div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="content">{{user.role}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="descfield">Description</div>
+                    <div class="desccontent">{{user.description}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

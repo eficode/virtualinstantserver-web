@@ -1,0 +1,10 @@
+<div ng-init="initialize()">
+	<errormodal></errormodal>
+    <h1>{{message}}</h1>
+    <div>
+        <div id="mainlistcontainer" ng-repeat="server in servers" ng-show="show[$index]">
+            <serverListElement></serverListElement>
+        	<button class="add add-server" title="Add Sever to User" type="button" ng-click="addVMToUser(server.id, $index)"></button> 
+        </div>
+    </div>
+</div>

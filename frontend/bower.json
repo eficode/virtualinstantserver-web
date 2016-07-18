@@ -1,0 +1,35 @@
+{
+  "name": "vis_web",
+  "description": "",
+  "main": "app/index.html",
+  "authors": [
+    "Oleg Mironov"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.5.x",
+    "angular-animate": "1.5.x",
+    "angular-mocks": "1.5.x",
+    "angular-resource": "1.5.x",
+    "angular-route": "^1.5.7",
+    "bootstrap": "3.3.x",
+    "jquery": "2.2.x",
+    "normalize-css": "^4.2.0",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.37",
+    "moment": "momentjs#^2.14.1",
+    "angular-xeditable": "^0.2.0",
+    "angular-truncate": "#latest",
+    "angular-loading": "#latest"
+  },
+  "resolutions": {
+    "angular": "1.5.x"
+  }
+}

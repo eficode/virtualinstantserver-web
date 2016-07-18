@@ -1,0 +1,31 @@
+<div class="registration-container" id="serverreg" ng-init="initialize()">
+    <errormodal></errormodal>
+    <form id="myForm" name="serverForm" ng-submit="serverForm.$valid && create()" novalidate>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="setting-container">
+                    <div class="setting-container-element">
+                        <input type="submit" value="" />
+                    </div>
+                    <div class="setting-container-element">
+                        <a href="#/"><img src="img/icon/discard.png" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div><img src="img/icon/addVM.png" class="new-user-pic" /></div>
+                </div>
+                <div class="row">
+                    <input type="text" class="form-control" id="userName" placeholder="Server Name" ng-model="server.name" ng-pattern="/^[a-zA-Z0-9_-]{3,45}$/" required>
+                </div>
+            </div>
+        </div> 
+        <select class="form-control" id="sel1" ng-model="server.typeId">
+            <option ng-repeat="types in serverType">{{types.name}}</option>                     
+        </select>
+        <textarea class="form-control" rows="4" id="description" placeholder="Description (not required)" ng-model="server.description" ng-pattern="/^.{0,1000}$/"</textarea>
+    </form>
+</div>

@@ -1,0 +1,14 @@
+<div ng-init="initializeUser(); serversOfUser()">
+    <errormodal></errormodal>
+    <usermodals></usermodals>
+    <userprofile></userprofile>
+    <div ng-show="display" class="my-items">
+        <h1>List of "{{user.username}}" Servers</h1>
+        <div>
+            <div id="mainlistcontainer" ng-repeat="server in servers" ng-show="show[$index]">
+                <serverListElement></serverListElement>
+                <button class="add remove-connection" title="Remove Server from User"type="button" ng-click="removeFromUser(server.id, $index)"></button>
+            </div>
+        </div>
+    </div>
+</div>

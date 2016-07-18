@@ -1,0 +1,18 @@
+<a href="#/userlist/{{user.id}}">
+    <div class="jumbotron">
+        <div class="row">
+            <div class="col-xs-6">
+                <div><img src="img/icon/usersicon.png" class="usericon" /></div>
+                <div class="title">{{user.username | characters:25 :true}}</div>
+            </div>
+            <div class="col-xs-6">
+                <div class="row">
+                    <div class="content-title">{{user.firstName | characters:13 :true}}{{' ' + user.secondName | characters:12 :true}}</div>
+                </div>
+                <div class="row">
+                    <div class="content">{{user.roleId}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</a>

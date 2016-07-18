@@ -1,0 +1,10 @@
+<div ng-init="initialize()">
+	<errormodal></errormodal>
+    <h1>List of all Users</h1>
+    <div>
+        <div id="mainlistcontainer" ng-repeat="user in users" ng-show="show[$index]">
+           <userListElement></userListElement>
+           <button class="add delete" title="Delete User"type="button" ng-click="delete(user.id, $index)"></button> 
+        </div>
+    </div>
+</div>

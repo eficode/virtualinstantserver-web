@@ -1,0 +1,80 @@
+<div class="container-fluid">
+    <div class="profilecontainer" id="user-profile">
+        <form editable-form name="editableForm" onaftersave="update()">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="setting-container">
+                        <img src="img/icon/container-fix.gif" />
+                        <a href="#/userlist/{{user.id}}/add_Servers" title="Add Servers" ng-show="addServers"><img src="img/icon/addvmachine.png" /></a>
+                        <a href="" ng-click="editableForm.$show()" ng-show="showEdit" title="Edit"><img src="img/icon/edit.png" /></a>
+                        <a href="" title="Change Password" ng-show="showChangePassword"><img src="img/icon/changerootpass.png"  data-toggle="modal" data-target="#changePasswordModal"/></a>
+                        <a href="" title="Promote to Admin" ng-show="showPromote"><img src="img/icon/promoteUser.png"  data-toggle="modal" data-target="#promoteModal"/></a>
+                        <a href="" title="Delete User" ng-show="showDelete"><img src="img/icon/delete.png"  data-toggle="modal" data-target="#deleteModal"/></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div><img src="img/icon/usersicon.png" class="usericon" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="content-title-id user-profile">{{user.username}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    <div class="row">
+                        <div class="content-title">Username:</div>
+                        <div class="content">{{user.username || 'empty'}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="content-title">Name:</div>
+                        <div class="content" editable-text="user.firstName" e-name="firstName">{{user.firstName}}</div>
+                        <div class="content" editable-text="user.secondName" e-name="secondName">{{user.secondName}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="content-title">Company</div>
+                        <div class="content" editable-text="user.company" e-name="email">{{user.company}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="content-title">email</div>
+                        <div class="content" editable-text="user.email" e-name="email">{{user.email}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="content-title">Phone</div>
+                        <div class="content" editable-text="user.phone" e-name="email">{{user.phone}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="content-title">Role</div>
+                        <div class="content">{{user.roleId}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="content-title">Registered at:</div>
+                        <div class="content">{{user.createdDate | date:'dd.MM.yyyy'}}</div>
+                    </div>
+                </div>
+                <div class="col-xs-1">
+                    <div class="vertical-line"></div>
+                </div>
+                <div class="col-xs-7">
+                    <div class="row">
+                        <div class="description-title">Description</div>
+                    </div>
+                    <div class="row">
+                        <div class="description-content" editable-textarea="user.description" e-name="description">{{user.description}}</div>
+                    </div>
+                    <div class="row">
+                        <span12 ng-show="editableForm.$visible">
+                            <button type="submit" class="btn btn-accept">
+                            </button>
+                            <button  class="btn btn-discard" ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()">
+                            </button>
+                        </span12>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

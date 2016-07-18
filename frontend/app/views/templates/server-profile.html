@@ -1,0 +1,76 @@
+<div class="container-fluid">
+    <div class="profilecontainer" id="server-profile">
+        <form editable-form name="editableForm" onaftersave="update()">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="setting-container">
+                        <a href="#/vmlist/{{server.id}}/add_Users" title="Add Users" ng-click="editableForm.$show()"><img src="img/icon/adduserico.png" /></a>
+                         <a href="" title="Change Server Root Password"><img src="img/icon/changerootpass.png" data-toggle="modal" data-target="#changeRootPasswordModal" /></a>
+                        <a href="" title="Edit" ng-click="editableForm.$show()" ng-hide="edit.$visible"><img src="img/icon/edit.png" /></a>
+                        <a href="" title="Postopone Server"><img src="img/icon/postpone.png" data-toggle="modal" data-target="#postponeModal" /></a>
+                        <a href="" title="Delete Server"><img src="img/icon/delete.png" data-toggle="modal" data-target="#deleteModal" /></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div><img src="img/icon/VM.png" class="usericon" /></div>
+                    </div>
+                    <div class="row" id="servername">
+                        <div name="name" class="content-title-id" editable-text="server.name" e-name="name">{{server.name || 'empty'}}</div>
+                    </div>
+                    <div class="row" id="start-stop-server">
+                        <div name="name" class="content-title-id">
+                            <a href="" title="Start/Stop Server" ng-click="changeStatus()">
+                                <img ng-show="serverStatus" src="img/icon/start.png"/>
+                                <img ng-hide="serverStatus" src="img/icon/stop.png"/>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    <div class="row">
+                        <div class="content-title">IP:</div>
+                        <div class="content">{{server.ip}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="content-title">Type:</div>
+                        <div class="content">{{server.typeId}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="content-title">Status:</div>
+                        <div ng-hide="editableForm.$visible" class="content">{{server.statusId}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="content-title">Created Date:</div>
+                        <div class="content">{{server.createdDate | date:'dd.MM.yyyy'}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="content-title">Due Date:</div>
+                        <div class="content">{{server.dueDate  | date:'dd.MM.yyyy'}}</div>
+                    </div>
+                </div>
+                <div class="col-xs-1">
+                    <div class="vertical-line"></div>
+                </div>
+                <div class="col-xs-7">
+                    <div class="row">
+                        <div class="description-title">Description</div>
+                    </div>
+                    <div class="row">
+                        <div class="description-content" editable-textarea="server.description" e-name="description">{{server.description}}</div>
+                    </div>
+                    <div class="row">
+                        <span12 ng-show="editableForm.$visible">
+                            <button type="submit" class="btn btn-accept" />
+                            <button type="button" class="btn btn-discard" ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()" />
+                        </span12>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

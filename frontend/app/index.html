@@ -1,0 +1,67 @@
+<html ng-app="VIS">
+
+<head>
+    <title>VIS Main</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">    
+    <link rel="stylesheet" type="text/css" href="bower_components/normalize-css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-xeditable/dist/css/xeditable.min.css">
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker-standalone.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/angular-loading/angular-loading.css">
+    <link rel="stylesheet" type="text/css" href="common.css">
+    <script type="text/javascript" language="javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" language="javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
+    <script type="text/javascript" src="bower_components/spin.js/spin.js"></script>
+    <script type="text/javascript" src="bower_components/angular-loading/angular-loading.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-xeditable/dist/js/xeditable.min.js"></script>
+    <script type="text/javascript" src="bower_components/moment/min/moment.min.js"></script>    
+    <script type="text/javascript" src="bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-truncate/src/truncate.js"></script>
+    <script type="text/javascript" src="app.js"></script> 
+    <script type="text/javascript" src="models/models.js"></script>
+    <script type="text/javascript" src="services/apiService.js"></script>
+    <script type="text/javascript" src="services/userService.js"></script>
+    <script type="text/javascript" src="services/serverService.js"></script>
+    <script type="text/javascript" src="controllers/errorController.js"></script>
+    <script type="text/javascript" src="controllers/userController.js"></script>
+    <script type="text/javascript" src="controllers/serverController.js"></script>
+    <script type="text/javascript" src="directives/directives.js"></script>
+    
+</head>
+
+<body ng-controller="userLoginController" ng-init="initialize()" dw-loading="executing" dw-loading-options="{text: 'Executing...'}">
+    <div ng-show="isLoggedIn">        
+        <div id="leftMenu">
+            <div class="menuItem logo">
+                <a href="#/vmlist"></a>
+            </div>
+            <div class="menuItem newVM">
+                <a href="#/newserver">New Server</a>
+            </div>
+            <div class="menuItem vm">
+                <a href="#/vmlist">Servers</a>
+            </div>
+            <div class="menuItem user">
+                <a href="#/userlist">Users</a>
+            </div>
+        </div>
+            <div class="dropdown-user">
+                <button class="btn btn-mainmenu dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                    {{username}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-user" role="menu" aria-labelledby="dropdownMenu1">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#/myaccount">My Account</a></li>                
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="javascript:void(0)" ng-click="logout()">Log out</a></li>
+                </ul>
+            </div>
+    </div>
+        <div id="content">
+            <ng-view></ng-view>
+        </div>    
+</body>
+</html>

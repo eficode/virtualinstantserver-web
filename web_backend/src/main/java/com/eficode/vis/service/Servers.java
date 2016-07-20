@@ -115,9 +115,9 @@ public class Servers extends AbstractService {
         c.add(Calendar.DATE, 30);
         Long serverIp = generateServerIp();
         
-        if(serverIpCheck(104l, serverIp)) {
+        if(serverIpCheck(this.UPPER_IP_LIMIT, serverIp)) {
         } else {
-            return wrapper.getErrorMessage(SERVICE_TYPE, methodName, "No more IPs within specified upper limit - " + 104l);
+            return wrapper.getErrorMessage(SERVICE_TYPE, methodName, "No more IPs within specified upper limit - " + this.UPPER_IP_LIMIT);
         }
         
         try{

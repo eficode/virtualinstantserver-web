@@ -244,6 +244,7 @@ CREATE TABLE `servers` (
   `description` text,
   `created_date` datetime NOT NULL,
   `deleted` tinyint(1) DEFAULT '0',
+  `host` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
   KEY `fk_servers_to_server_types` (`type_id`),

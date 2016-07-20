@@ -149,7 +149,6 @@ userService.service('serverService', ['$http', '$filter', 'apiService', function
         console.log(serverdata);
         var request = apiService.createRequest(apiService.createUrl('servers'), 'POST', serverdata)
         $http(request).success(function(data) {
-            debugger;
             if (data.header.result && data.header.version == apiService.version) {
                 success();
             } else {

@@ -21,9 +21,9 @@ serverController.controller('serverController', ['$scope', '$routeParams', 'serv
 
         function makeServerIp(server) {
             if (checkServerIdRange(server.id)) {
-                return "192.168.31." + ((100 + server.id).toString());    
+                return "192.168.31." + ((server.host).toString());    
             }
-            return "Out of IPs - No IP assigned";
+            return "Unknown IP Error";
             
         }
 

@@ -11,18 +11,6 @@ function User() {
     this.email;
     this.roleId;
     this.deleted;
-    // ...
-
-    /*	this.getId = function() {
-    		return this.id;
-    	}
-
-    	this.setId = function(id) {
-    		if (id > 0)
-    			this.id = id;
-    	}*/
-
-    // geters and seters
 
     this.fromJSON = function(object) { //function to fetch data to front-end from back-end
         this.id = object.id;
@@ -58,6 +46,7 @@ function User() {
 function Server() {
 
     this.id;
+    this.host;
     this.name;
     this.typeId;
     this.statusId;
@@ -68,7 +57,7 @@ function Server() {
 
     this.fromJSON = function(object) {
         this.id = object.id;
-        this.username = object.username;
+        this.host = object.host;
         this.name = object.name;
         this.typeId = object.serverType.name;
         this.statusId = object.serverStatus.name;

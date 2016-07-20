@@ -7,6 +7,7 @@ import com.eficode.vis.model.ServerType;
 import com.eficode.vis.model.User;
 import com.eficode.vis.model.UsersToServers;
 import com.eficode.vis.service.Servers;
+import com.eficode.vis.util.Utils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -118,5 +119,22 @@ public class ServerDao extends AbstractDao<Server> implements ServerDaoInterface
         servers = query.list();
         session.close();
         return servers;
+    }
+
+    public Long generateIp() {
+        Session session  = sessionFactory.openSession();
+        Long newIp = 1l;
+        Query query = session.createQuery("select host from Server p where deleted = 0");
+        
+        if (!query.list().isEmpty()) {
+            newIp = (new Utils()).findLeastMissingValue(query.list());
+        }
+        
+        session.close();
+        return newIp + 100;
+    }
+    
+    public boolean serverIpCheck(long upperLimit, long targetIp) {
+        return targetIp < upperLimit;
     }
 }

@@ -61,6 +61,10 @@ public class Server implements Serializable {
     
     @Column(name="deleted")
     private Boolean deleted;
+    
+    @Expose
+    @Column(name="host")
+    private Long host;
 
     public Server() {
         this.id = 0l;
@@ -71,10 +75,11 @@ public class Server implements Serializable {
         this.description = "";
         this.createdDate = new Date();
         this.deleted = false;
+        this.host = 0l;
     }
     
     public Server(Long id, String name, ServerType serverType, ServerStatus serverStatus, Date dueDate, String description, 
-            Date createdDate, Boolean deleted) throws ValidationException {
+            Date createdDate, Boolean deleted, Long host) throws ValidationException {
         this.id = id;
         setName(name);
         this.serverType = serverType;
@@ -83,6 +88,7 @@ public class Server implements Serializable {
         setDescription(description);
         this.createdDate = createdDate;
         this.deleted = deleted;
+        this.host = host;
     }
     
     public Long getId() {
@@ -153,11 +159,19 @@ public class Server implements Serializable {
         this.deleted = deleted;
     }
 
+    public Long getHost() {
+        return host;
+    }
+
+    public void setHost(Long host) {
+        this.host = host;
+    }
+
     @Override
     public String toString() {
-        return "Server{" + "id=" + id + ", name=" + name + ", serverType=" + serverType + ", serverStatus=" + serverStatus + ", dueDate=" + dueDate + ", description=" + description + ", createdDate=" + createdDate + ", deleted=" + deleted + '}';
+        return "Server{" + "id=" + id + ", name=" + name + ", serverType=" + serverType + ", serverStatus=" + serverStatus + ", dueDate=" + dueDate + ", description=" + description + ", createdDate=" + createdDate + ", deleted=" + deleted + ", host=" + host + '}';
     }
-    
+      
     private boolean AbstractValidate(String parameter, String toCompare){
         Pattern pattern = Pattern.compile(parameter);
         Matcher matcher = pattern.matcher(toCompare);

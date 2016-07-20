@@ -5,14 +5,24 @@ import com.google.gson.Gson;
 public class ServerModel {
     private Long id;
     private String vzstring;
+    private Long host;
+
+    public Long getHost() {
+        return host;
+    }
+
+    public void setHost(Long host) {
+        this.host = host;
+    }
     
     public ServerModel() {
         this.id = 0l;
         this.vzstring = "";
     }
     
-    public ServerModel(Long id, String vzstring) {
+    public ServerModel(Long id, Long host, String vzstring) {
         this.id = id+100;
+        this.host = host;
         this.vzstring = vzstring;
     }
 

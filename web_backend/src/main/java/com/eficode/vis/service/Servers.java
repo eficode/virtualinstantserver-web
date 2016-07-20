@@ -45,6 +45,7 @@ public class Servers extends AbstractService {
     private Wrapper wrapper = new Wrapper();
     private IncomingWrapper incomingWrapper = new IncomingWrapper();
     private final String SERVICE_TYPE = this.getClass().getSimpleName();
+    private final Long UPPER_IP_LIMIT = 255l;
     private final UserDao userDao = DaoFactory.getUserDao();
     ConsumerRequests cr = new ConsumerRequests();
     
@@ -93,6 +94,7 @@ public class Servers extends AbstractService {
     @Consumes("application/json")
     public String createServer(ServerRest data, @HeaderParam("version") int version, @HeaderParam("userid") long userId,@HeaderParam("password") String password,
             @HeaderParam("message") String message) throws ParseException {
+        
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         try {
             incomingWrapper.HandleMessage(version,userId,password,message);
@@ -102,6 +104,7 @@ public class Servers extends AbstractService {
         }
         if(!userPermissionCheck(userId, methodName))
             return wrapper.getErrorMessage(SERVICE_TYPE, methodName, "Insufficient rights");
+        
         ServerType type = (new ServerTypeDao()).get(data.getServerType());
         ServerStatus status = (new ServerStatusDao()).get("Running");
         System.out.println(status.getName() + status.getDescription());
@@ -110,8 +113,15 @@ public class Servers extends AbstractService {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
         c.add(Calendar.DATE, 30);
+        Long serverIp = generateServerIp();
+        
+        if(serverIpCheck(104l, serverIp)) {
+        } else {
+            return wrapper.getErrorMessage(SERVICE_TYPE, methodName, "No more IPs within specified upper limit - " + 104l);
+        }
+        
         try{
-            server = new Server(0l, data.getName(), type, status, c.getTime(), data.getDescription(), date, false);
+            server = new Server(0l, data.getName(), type, status, c.getTime(), data.getDescription(), date, false, serverIp);
         }catch(ValidationException e){
             return wrapper.getErrorMessage(SERVICE_TYPE, methodName, e.getMessage());
         }
@@ -123,7 +133,7 @@ public class Servers extends AbstractService {
         catch(Exception e){
             return wrapper.getErrorMessage(SERVICE_TYPE, methodName, "Create operation fail.");
         }
-        ServerModel serverModel = new ServerModel(server.getId(), server.getServerType().getVzstring());
+        ServerModel serverModel = new ServerModel(server.getId(), server.getHost(), server.getServerType().getVzstring());
         String str = cr.doCreateRequest(serverModel);
         if (str == null)
             return wrapper.getErrorMessage(SERVICE_TYPE, methodName, "Create operation fail.");
@@ -531,5 +541,9 @@ public class Servers extends AbstractService {
         if(response == null)
             return wrapper.getErrorMessage(SERVICE_TYPE, methodName, "Update operation fail.");
         return wrapper.getSuccessMessage(SERVICE_TYPE, methodName);
+    }
+
+    private Long generateServerIp() {
+        return serverDao.generateIp();
     }
 }

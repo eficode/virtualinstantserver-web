@@ -16,18 +16,14 @@
   ],
   "dependencies": {
     "angular": "1.5.x",
-    "angular-animate": "1.5.x",
-    "angular-mocks": "1.5.x",
-    "angular-resource": "1.5.x",
     "angular-route": "^1.5.7",
+    "angular-xeditable": "^0.2.0",
+    "angular-truncate": "#latest",
+    "angular-loading": "^0.1.x",
     "bootstrap": "3.3.x",
     "jquery": "2.2.x",
     "normalize-css": "^4.2.0",
-    "eonasdan-bootstrap-datetimepicker": "^4.17.37",
-    "moment": "momentjs#^2.14.1",
-    "angular-xeditable": "^0.2.0",
-    "angular-truncate": "#latest",
-    "angular-loading": "#latest"
+    "moment": "momentjs#^2.14.1"
   },
   "resolutions": {
     "angular": "1.5.x"

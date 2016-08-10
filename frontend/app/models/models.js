@@ -25,7 +25,7 @@ function User() {
         this.email = object.email;
         this.roleId = object.userRole.name;
         this.deleted = object.deleted;
-    }
+    };
 
     this.toJSON = function() { //reverse function to send data back to back-end
         return {
@@ -40,7 +40,7 @@ function User() {
             email: this.email,
             userRole: this.roleId,
         };
-    }
+    };
 }
 
 function Server() {
@@ -64,7 +64,7 @@ function Server() {
         this.dueDate = object.dueDate;
         this.description = object.description;
         this.createdDate = object.createdDate;
-    }
+    };
 
     this.toJSON = function() { //reverse function to send data back to back-end
         return {
@@ -75,6 +75,6 @@ function Server() {
             dueDate: this.dueDate,
             description: this.description,
         };
-    }
+    };
 
 }

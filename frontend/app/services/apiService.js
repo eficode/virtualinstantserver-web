@@ -3,7 +3,10 @@ var apiService = angular.module('apiService', []);
 apiService.service('apiService', function() {
     var version = 2;
     var loginFreePages = ['/', '/login_error', '/email_error', '/email_submitted', '/newuser', '/forgot_password'];
+    var prodUrl = 'http://add.your.url.com'; 
+    var devUrl = 'http://localhost:8080/api'; 
 
+   /* Public Functions */
     function createRequest(url, method, data) {
         return {
             url: url,
@@ -12,14 +15,14 @@ apiService.service('apiService', function() {
             headers: {
                 'version': version,
                 'userid': (localStorage.getItem("userid") == null) ? '0' : localStorage.getItem("userid"),
-                'password': (localStorage.getItem("password") == null) ? '0' : localStorage.getItem("password"),
+                'token': (localStorage.getItem("token") == null) ? '0' : localStorage.getItem("token"),
                 'message': ''
             }
         };
     }
 
     function createUrl() {
-        var url = 'http://localhost:8080/api';
+        var url = getApiIp();
         for (var index = 0; index < arguments.length; index++) {
             url += '/' + arguments[index];
             console.log(arguments[index]);
@@ -33,6 +36,16 @@ apiService.service('apiService', function() {
             return false;
         }
         return true;
+    }
+
+    /* Private Functions */
+    function getApiIp() {
+        var hostName = removePortFromString(location.host);
+        return hostName === "diyserver.office.eficode.fi" ? prodUrl : devUrl;
+    }
+
+    function removePortFromString(str) {
+        return str.replace(/:.*/, "");
     }
 
     return {

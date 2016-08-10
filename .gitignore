@@ -1,7 +1,7 @@
 .DS_Store
 bower_components
 node_modules
-
+frontend/dist
 
 #Java
 web_backend/target/

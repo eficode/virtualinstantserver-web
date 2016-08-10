@@ -1,8 +1,8 @@
-var serverController = angular.module('serverController', ['serverService', 'errorController']);
+var serverController = angular.module('serverController', ['serverService', 'userService', 'errorController']);
 
 serverController.controller('serverController', ['$scope', '$routeParams', 'serverService', '$controller', '$filter', '$location', '$timeout', '$loading',
     function($scope, $routeParams, serverService, $controller, $filter, $location, $timeout, $loading) {
-        $controller('errorController',{$scope : $scope });
+        $controller('errorController', { $scope: $scope });
 
         $scope.initializeSever = function() {
             $scope.server = [];
@@ -12,8 +12,10 @@ serverController.controller('serverController', ['$scope', '$routeParams', 'serv
                 $scope.server.dueDate = new Date($scope.server.dueDate);
                 $scope.server.ip = makeServerIp($scope.server);
                 $scope.serverStatus = makeServerStatus($scope.server);
+                $scope.showServer = true;
             }, function(error) {
-                $scope.displaErroryModal(error);
+                $scope.showLink = true;
+                $scope.handleErrors(error);
             });
 
             $scope.adminsOfVm();
@@ -21,10 +23,9 @@ serverController.controller('serverController', ['$scope', '$routeParams', 'serv
 
         function makeServerIp(server) {
             if (checkServerIdRange(server.id)) {
-                return "192.168.31." + ((server.host).toString());    
+                return "192.168.31." + ((server.host).toString());
             }
             return "Unknown IP Error";
-            
         }
 
         function checkServerIdRange(id) {
@@ -45,7 +46,7 @@ serverController.controller('serverController', ['$scope', '$routeParams', 'serv
 
             }, function(error) {
                 $loading.finish('executing');
-                $scope.displaErroryModal(error);
+                $scope.handleErrors(error);
             })
         }
 
@@ -58,7 +59,7 @@ serverController.controller('serverController', ['$scope', '$routeParams', 'serv
                     $loading.finish('executing');
                 }, function(error) {
                     $loading.finish('executing');
-                    $scope.displaErroryModal(error);
+                    $scope.handleErrors(error);
                 });
             } else {
                 serverService.startServer($routeParams.id, function() {
@@ -67,7 +68,7 @@ serverController.controller('serverController', ['$scope', '$routeParams', 'serv
                     $loading.finish('executing');
                 }, function(error) {
                     $loading.finish('executing');
-                    $scope.displaErroryModal(error);
+                    $scope.handleErrors(error);
                 })
             }
         }
@@ -78,7 +79,7 @@ serverController.controller('serverController', ['$scope', '$routeParams', 'serv
                     $scope.server;
                 },
                 function(error) {
-                    $scope.displaErroryModal(error);
+                    $scope.handleErrors(error);
                 },
                 $scope.server
             )
@@ -92,7 +93,7 @@ serverController.controller('serverController', ['$scope', '$routeParams', 'serv
 
                     },
                     function(error) {
-                        $scope.displaErroryModal(error);
+                        $scope.handleErrors(error);
                     },
                     $scope.confirmPassword
                 );
@@ -105,7 +106,7 @@ serverController.controller('serverController', ['$scope', '$routeParams', 'serv
                     $scope.server;
                 },
                 function(error) {
-                    $scope.displaErroryModal(error);
+                    $scope.handleErrors(error);
                 },
                 $scope.server
             )
@@ -115,7 +116,7 @@ serverController.controller('serverController', ['$scope', '$routeParams', 'serv
 
                 },
                 function(error) {
-                    $scope.displaErroryModal(error);
+                    $scope.handleErrors(error);
                 },
                 $scope.server
             )
@@ -133,7 +134,7 @@ serverController.controller('serverController', ['$scope', '$routeParams', 'serv
                 }
                 $scope.usersOfVm();
             }, function(error) {
-                $scope.displaErroryModal(error);
+                $scope.handleErrors(error);
             })
         }
         $scope.usersOfVm = function() {
@@ -149,7 +150,7 @@ serverController.controller('serverController', ['$scope', '$routeParams', 'serv
                 }
                 $scope.users = users;
             }, function(error) {
-                $scope.displaErroryModal(error);
+                $scope.handleErrors(error);
             })
         }
 
@@ -157,27 +158,51 @@ serverController.controller('serverController', ['$scope', '$routeParams', 'serv
             serverService.removeFromVM($routeParams.id, userID, function(user) {
                 $scope.show[index] = false;
             }, function(error) {
-                $scope.displaErroryModal(error);
+                $scope.handleErrors(error);
             })
         }
     }
 
 ]);
 
-serverController.controller('serverListController', ['$scope', '$loading', '$controller', 'serverService',
-    function($scope, $loading, $controller, serverService) {
-        $controller('errorController',{$scope : $scope });
+serverController.controller('serverListController', ['$scope', '$location', '$loading', '$controller', 'serverService', 'userService',
+    function($scope, $location, $loading, $controller, serverService, userService) {
+        $controller('errorController', { $scope: $scope });
 
         $scope.initialize = function() {
-            serverService.listServers(function(servers) {
-                $scope.servers = servers;
-                $scope.show = [];
-                for (var i = 0; i < $scope.servers.length; i++)
-                    $scope.show[i] = true;
-                console.log($scope.servers);
-            }, function(error) {
-                $scope.displaErroryModal(error);
-            })
+
+            if (localStorage.getItem('role') === 'admin') {
+                serverService.listServers(function(servers) {                    
+                    $scope.title = "List of all Servers";
+                    $scope.servers = servers;
+                    $scope.show = [];
+                    for (var i = 0; i < $scope.servers.length; i++)
+                        $scope.show[i] = true;
+                    console.log($scope.servers);
+                }, function(error) {
+                    $scope.handleErrors(error);
+                });
+
+            } else {
+                userService.serversOfUser("", function(server) {
+                    $scope.title = "List of your Servers";                    
+                    $scope.servers = server;                    
+                    if ($scope.servers.length > 0) {
+                        $scope.display = true;
+                        $scope.show = [];
+                        for (var i = 0; i < $scope.servers.length; i++)
+                            $scope.show[i] = true;
+                    }
+                    console.log($scope.display);
+                }, function(error) {
+                    $scope.handleErrors(error);
+                });
+            }
+        }
+
+        $scope.injectVarsToScope = function(currentServer, $index) {
+            $scope.currentServer = currentServer;
+            $scope.index = $index;
         }
 
         $scope.delete = function(serverID, index) {
@@ -187,15 +212,15 @@ serverController.controller('serverListController', ['$scope', '$loading', '$con
                 $scope.show[index] = false;
             }, function(error) {
                 $loading.finish('executing');
-                $scope.displaErroryModal(error);
+                $scope.handleErrors(error);
             })
         }
     }
 ]);
 
-serverController.controller('serversAddToUserListController', ['$scope', '$routeParams', '$controller', 'serverService',
-    function($scope, $routeParams, $controller, serverService) {
-        $controller('errorController',{$scope : $scope });
+serverController.controller('serversAddToUserListController', ['$scope', '$routeParams', '$location', '$controller', 'serverService',
+    function($scope, $routeParams, $location, $controller, serverService) {
+        $controller('errorController', { $scope: $scope });
 
         $scope.initialize = function() {
             serverService.listVMToUsers($routeParams.id, function(servers) {
@@ -205,26 +230,26 @@ serverController.controller('serversAddToUserListController', ['$scope', '$route
                     $scope.show = [];
                     for (var i = 0; i < $scope.servers.length; i++)
                         $scope.show[i] = true;
-                } else $scope.message = "There are no servers available!"
+                } else $scope.message = "There are no servers available!";
                 console.log(servers);
             }, function(error) {
-                $scope.displaErroryModal(error);
-            })
-        }
+                $scope.handleErrors(error);
+            });
+        };
         $scope.addVMToUser = function(serverID, index) {
             console.log(serverID);
             serverService.addVMsToUser($routeParams.id, function(servers) {
                 $scope.show[index] = false;
             }, function(error) {
-                $scope.displaErroryModal(error);
-            }, serverID)
-        }
+                $scope.handleErrors(error);
+            }, serverID);
+        };
     }
 ]);
 
 serverController.controller('serverCreateController', ['$scope', '$routeParams', '$location', '$loading', '$controller', 'serverService',
     function($scope, $routeParams, $location, $loading, $controller, serverService) {
-        $controller('errorController',{$scope : $scope });
+        $controller('errorController', { $scope: $scope });
 
         $scope.initialize = function() {
             $scope.server = new Server();
@@ -235,7 +260,7 @@ serverController.controller('serverCreateController', ['$scope', '$routeParams',
                     console.log($scope.serverType);
                 },
                 function(error) {
-                    $scope.displaErroryModal(error);
+                    $scope.handleErrors(error);
                 }
             );
         }
@@ -247,7 +272,7 @@ serverController.controller('serverCreateController', ['$scope', '$routeParams',
                     $location.path("/vmlist");
                 }, function(error) {
                     $loading.finish('executing');
-                    $scope.displaErroryModal(error);
+                    $scope.handleErrors(error);
                 },
                 $scope.server
             )

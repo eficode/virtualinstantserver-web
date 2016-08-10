@@ -6,9 +6,8 @@
         <h1>List of "{{server.name}}" Admins</h1>
         <div>
             
-            <div id="mainlistcontainer" ng-repeat="user in admins" ng-show="show[$index]">
+            <div id="mainlistcontainer" ng-repeat="user in admins">
                 <userlistelement></userlistelement>
-                <button class="add remove-connection" title="Remove User from Server"type="button" ng-click="removeFromVM(user.id, $index)"></button>
             </div>
         </div>
     </div>
@@ -18,7 +17,7 @@
            
             <div id="mainlistcontainer" ng-repeat="user in users" ng-show="show[$index]">
                 <userlistelement></userlistelement>
-                <button class="add remove-connection" title="Remove User from Server"type="button" ng-click="removeFromVM(user.id, $index)"></button>
+                <button class="add remove-connection" title="Remove User from Server" type="button" ng-click="removeFromVM(user.id, $index)"></button>
             </div>
         </div>
     </div>

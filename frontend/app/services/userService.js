@@ -2,9 +2,8 @@ var userService = angular.module('userService', []);
 
 userService.service('userService', ['$http', 'apiService', function($http, apiService) {
     this.getUser = function(id, success, error) {
-        var request = apiService.createRequest(apiService.createUrl('users', id), 'GET')
+        var request = apiService.createRequest(apiService.createUrl('users', id), 'GET');
         $http(request).success(function(data) {
-            console.log(data);
             if (data.header.result && data.header.version == apiService.version) {
                 var user = new User();
                 user.fromJSON(data.data);
@@ -18,7 +17,7 @@ userService.service('userService', ['$http', 'apiService', function($http, apiSe
     };
 
     this.deleteUser = function(id, success, error) {
-        var request = apiService.createRequest(apiService.createUrl('users', id), 'DELETE')
+        var request = apiService.createRequest(apiService.createUrl('users', id), 'DELETE');
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 success();
@@ -32,8 +31,7 @@ userService.service('userService', ['$http', 'apiService', function($http, apiSe
 
     this.updateUser = function(id, success, error, user) {
         var userdata = JSON.stringify(user.toJSON());
-        var request = apiService.createRequest(apiService.createUrl('users', id), 'PUT', userdata)
-        console.log(userdata);
+        var request = apiService.createRequest(apiService.createUrl('users', id), 'PUT', userdata);
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 success();
@@ -47,7 +45,6 @@ userService.service('userService', ['$http', 'apiService', function($http, apiSe
 
     this.submitEmail = function(success, error, email) {
         var request = apiService.createRequest(apiService.createUrl('users/restore'), 'POST', email);
-        console.log(email);
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 success();
@@ -61,7 +58,7 @@ userService.service('userService', ['$http', 'apiService', function($http, apiSe
 
     this.createUser = function(id, success, error, user) {
         var userdata = JSON.stringify(user.toJSON());
-        var request = apiService.createRequest(apiService.createUrl('users'), 'POST', userdata)
+        var request = apiService.createRequest(apiService.createUrl('users'), 'POST', userdata);
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 success();
@@ -74,7 +71,7 @@ userService.service('userService', ['$http', 'apiService', function($http, apiSe
     };
 
     this.promoteUser = function(id, success, error) {
-        var request = apiService.createRequest(apiService.createUrl('users/rights', id), 'PUT')
+        var request = apiService.createRequest(apiService.createUrl('users/rights', id), 'PUT');
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 success();
@@ -101,7 +98,7 @@ userService.service('userService', ['$http', 'apiService', function($http, apiSe
     };
 
     this.listUsers = function(success, error) {
-        var request = apiService.createRequest(apiService.createUrl('users'), 'GET')
+        var request = apiService.createRequest(apiService.createUrl('users'), 'GET');
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 users = [];
@@ -127,7 +124,6 @@ userService.service('userService', ['$http', 'apiService', function($http, apiSe
         myUser.id = user;
         var userdata = JSON.stringify(myUser.toJSON());
         var request = apiService.createRequest(apiService.createUrl('servers/users/add', id), 'POST', myUser);
-        console.log("User ID: " + userdata);
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 success()
@@ -141,7 +137,7 @@ userService.service('userService', ['$http', 'apiService', function($http, apiSe
     };
 
     this.removeFromUser = function(id, server, success, error) {
-        var request = apiService.createRequest(apiService.createUrl('servers/users/delete', server, id), 'DELETE')
+        var request = apiService.createRequest(apiService.createUrl('servers/users/delete', server, id), 'DELETE');
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 success();
@@ -154,7 +150,7 @@ userService.service('userService', ['$http', 'apiService', function($http, apiSe
     };
 
     this.listUsersToVM = function(id, success, error) {
-        var request = apiService.createRequest(apiService.createUrl('users/servers/not', id), 'GET')
+        var request = apiService.createRequest(apiService.createUrl('users/servers/not', id), 'GET');
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 users = [];
@@ -180,20 +176,19 @@ userService.service('userService', ['$http', 'apiService', function($http, apiSe
         };
     };
 
-    this.login = function(username, password, success, error) {
+    this.login = function(username, password, rememberMe, success, error) {
         var userdata = JSON.stringify({
             username: username,
-            password: password
+            password: password,
+            rememberMe: rememberMe
         });
         var request = apiService.createRequest(apiService.createUrl('users', 'login'), 'POST', userdata);
-        console.log(request);
         $http(request).success(function(data) {
-            console.log("login");
             if (data.header.result && data.header.version == apiService.version) {
-                console.log(data.header);
                 localStorage.setItem("userid", data.data.id);
                 localStorage.setItem("username", username);
-                localStorage.setItem("password", password);
+                localStorage.setItem("token", data.data.token);
+                localStorage.setItem("role", data.data.role);
                 success();
             } else {
                 error(data);
@@ -205,13 +200,13 @@ userService.service('userService', ['$http', 'apiService', function($http, apiSe
 
     this.logout = function() {
         localStorage.removeItem("userid");
-        localStorage.removeItem("password");
+        localStorage.removeItem("token");
         localStorage.removeItem("username");
+        localStorage.removeItem("role");
     };
 
     this.serversOfUser = function(id, success, error) {
-        var request = apiService.createRequest(apiService.createUrl('servers/users', id), 'GET')
-        console.log(request);
+        var request = apiService.createRequest(apiService.createUrl('servers/users', id), 'GET');
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 servers = [];
@@ -220,7 +215,6 @@ userService.service('userService', ['$http', 'apiService', function($http, apiSe
                     server.fromJSON(data.data[index].server);
                     servers.push(server);
                 }
-                console.log(servers);
                 success(servers);
             } else {
                 error(data);

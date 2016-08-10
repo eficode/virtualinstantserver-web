@@ -1,15 +1,11 @@
 <div ng-init="initialize()">
+    <servermodals></servermodals>
     <errormodal></errormodal>
-    <h1>List of all Servers</h1>
+    <h1>{{title}}</h1>
     <div>
         <div id="mainlistcontainer" ng-repeat="server in servers" ng-show="show[$index]">        
-           <serverListElement></serverListElement>
-           <button class="add delete" title="Delete Server"type="button" ng-click="delete(server.id, $index)"></button> 
-        </div>
-        <div class="service-container">
-        	<h4 class="service-ip">Access VM server:</h4>
-	        <code>ssh root@192.168.50.4</code><br>
-	        <code>Password: vagrant</code>
+           <serverListElement></serverListElement>           
+           <button class="add delete" title="Delete Server" type="button" data-toggle="modal" data-target="#deleteModalList" ng-click="injectVarsToScope(server, $index)"></button>
         </div>
     </div>
 </div>

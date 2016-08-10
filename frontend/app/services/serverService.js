@@ -1,12 +1,11 @@
 var serverService = angular.module('serverService', []);
 
-userService.service('serverService', ['$http', '$filter', 'apiService', function($http, $filter, apiService) {
+serverService.service('serverService', ['$http', '$filter', 'apiService', function($http, $filter, apiService) {
     this.getServer = function(id, success, error) {
-        var request = apiService.createRequest(apiService.createUrl('servers', id), 'GET')
+        var request = apiService.createRequest(apiService.createUrl('servers', id), 'GET');
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 var server = new Server();
-                console.log(data.data);
                 server.fromJSON(data.data);
                 success(server);
             } else {
@@ -17,7 +16,7 @@ userService.service('serverService', ['$http', '$filter', 'apiService', function
         });
     };
     this.deleteServer = function(id, success, error) {
-        var request = apiService.createRequest(apiService.createUrl('servers', id), 'DELETE')
+        var request = apiService.createRequest(apiService.createUrl('servers', id), 'DELETE');
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 success();
@@ -45,7 +44,7 @@ userService.service('serverService', ['$http', '$filter', 'apiService', function
     };
 
     this.removeFromVM = function(id, user, success, error) {
-        var request = apiService.createRequest(apiService.createUrl('servers/users/delete', id, user), 'DELETE')
+        var request = apiService.createRequest(apiService.createUrl('servers/users/delete', id, user), 'DELETE');
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 success();
@@ -73,8 +72,7 @@ userService.service('serverService', ['$http', '$filter', 'apiService', function
     this.updateServer = function(id, success, error, server) {
         var serverdata = server.toJSON();
         delete serverdata.dueDate;        
-        var request = apiService.createRequest(apiService.createUrl('servers', id), 'PUT', serverdata)
-        console.log(serverdata);
+        var request = apiService.createRequest(apiService.createUrl('servers', id), 'PUT', serverdata);
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 success();
@@ -90,10 +88,9 @@ userService.service('serverService', ['$http', '$filter', 'apiService', function
         var temp = new Server();
         var tempDate = new Date(server.dueDate);
         temp.id = server.id;       
-        temp.dueDate = $filter('date')(tempDate, "yyyy-MM-dd");        
-        console.log(server.dueDate);
+        temp.dueDate = $filter('date')(tempDate, "yyyy-MM-dd");
         var serverdata = JSON.stringify(temp.toJSON());
-        var request = apiService.createRequest(apiService.createUrl('servers/postpone'), 'PUT', serverdata)
+        var request = apiService.createRequest(apiService.createUrl('servers/postpone'), 'PUT', serverdata);
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 success();
@@ -106,7 +103,7 @@ userService.service('serverService', ['$http', '$filter', 'apiService', function
     };
 
     this.stopServer = function(id, success, error) {
-        var request = apiService.createRequest(apiService.createUrl('servers/stop', id), 'GET')
+        var request = apiService.createRequest(apiService.createUrl('servers/stop', id), 'GET');
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 success();
@@ -119,7 +116,7 @@ userService.service('serverService', ['$http', '$filter', 'apiService', function
     };
 
     this.startServer = function(id, success, error) {
-        var request = apiService.createRequest(apiService.createUrl('servers/start', id), 'GET')
+        var request = apiService.createRequest(apiService.createUrl('servers/start', id), 'GET');
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 success();
@@ -131,7 +128,7 @@ userService.service('serverService', ['$http', '$filter', 'apiService', function
         });
     };
     this.getServerTypes = function(success, error) {
-        var request = apiService.createRequest(apiService.createUrl('servers/types'), 'GET')
+        var request = apiService.createRequest(apiService.createUrl('servers/types'), 'GET');
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 var test = data.data;
@@ -146,8 +143,7 @@ userService.service('serverService', ['$http', '$filter', 'apiService', function
 
     this.createServer = function(id, success, error, server) {
         var serverdata = JSON.stringify(server.toJSON());
-        console.log(serverdata);
-        var request = apiService.createRequest(apiService.createUrl('servers'), 'POST', serverdata)
+        var request = apiService.createRequest(apiService.createUrl('servers'), 'POST', serverdata);
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 success();
@@ -161,7 +157,7 @@ userService.service('serverService', ['$http', '$filter', 'apiService', function
 
 
     this.listServers = function(success, error) {
-        var request = apiService.createRequest(apiService.createUrl('servers'), 'GET')
+        var request = apiService.createRequest(apiService.createUrl('servers'), 'GET');
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 servers = [];
@@ -170,7 +166,6 @@ userService.service('serverService', ['$http', '$filter', 'apiService', function
                     server.fromJSON(data.data[index]);
                     servers.push(server);
                 }
-                console.log(data.data);
                 success(servers);
             } else {
                 error(data);
@@ -180,7 +175,7 @@ userService.service('serverService', ['$http', '$filter', 'apiService', function
         });
     };
     this.listVMToUsers = function(id, success, error) {
-        var request = apiService.createRequest(apiService.createUrl('servers/users/not', id), 'GET')
+        var request = apiService.createRequest(apiService.createUrl('servers/users/not', id), 'GET');
         $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 servers = [];
@@ -199,7 +194,7 @@ userService.service('serverService', ['$http', '$filter', 'apiService', function
     };
 
     this.adminsOfVM = function(id, success, error) {
-        var request = apiService.createRequest(apiService.createUrl('servers/users/admin', id), 'GET')
+        var request = apiService.createRequest(apiService.createUrl('servers/users/admin', id), 'GET');
         $http(request).success(function(data) {            
             console.log(data);
             if (data.header.result && data.header.version == apiService.version) {
@@ -209,7 +204,6 @@ userService.service('serverService', ['$http', '$filter', 'apiService', function
                     user.fromJSON(data.data[index].user);
                     users.push(user);
                 }
-                console.log(users);
                 success(users);
             } else {
                 error(data);
@@ -221,9 +215,8 @@ userService.service('serverService', ['$http', '$filter', 'apiService', function
     };
 
     this.usersOfVM = function(id, success, error) {
-        var request = apiService.createRequest(apiService.createUrl('servers/users/user', id), 'GET')
-        $http(request).success(function(data) {            
-            console.log(data);
+        var request = apiService.createRequest(apiService.createUrl('servers/users/user', id), 'GET');
+        $http(request).success(function(data) {
             if (data.header.result && data.header.version == apiService.version) {
                 users = [];
                 for (var index = 0; index < data.data.length; index++) {
@@ -231,7 +224,6 @@ userService.service('serverService', ['$http', '$filter', 'apiService', function
                     user.fromJSON(data.data[index].user);
                     users.push(user);
                 }
-                console.log(users);
                 success(users);
             } else {
                 error(data);

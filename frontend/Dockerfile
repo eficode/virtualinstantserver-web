@@ -1,16 +1,13 @@
 FROM node:argon
 
-# use changes to package.json to force Docker not to use the cache
-# when we change our application's nodejs dependencies:
-ADD package.json /tmp/package.json
-ADD bower.json /usr/src/app/
-ADD .bowerrc /usr/src/app/
+# Copy Config Files
+ADD package.json bower.json .bowerrc gulpfile.js /usr/src/app/
 
-RUN npm install bower -g
-RUN cd /usr/src/app && bower install --allow-root
+# Install bower and gulp globally
+RUN npm install bower -g && npm install gulp -g
 
-RUN cd /tmp && npm install && mkdir -p /usr/src/app/node_modules/
-RUN cp -a /tmp/node_modules /usr/src/app/
+# Install bower and npm dependencies; run gulp
+RUN cd /usr/src/app && bower install --allow-root && npm install && gulp
 
 # From here we load our application's code in, therefore the previous docker
 # "layer" thats been cached will be used if possible

@@ -1,4 +1,5 @@
-<div class="container-fluid">
+<a href="#vmlist" class="link-back" ng-show="showLink">To the Servers List</a>
+<div class="container-fluid" ng-show="showServer">
     <div class="profilecontainer" id="server-profile">
         <form editable-form name="editableForm" onaftersave="update()">
             <div class="row">
@@ -37,12 +38,16 @@
                         <div class="content">{{server.ip}}</div>
                     </div>
                     <div class="row">
+                        <div class="content-title">Default Password:</div>
+                        <div class="content"><code>changeme</code></div>
+                    </div>
+                    <div class="row">
                         <div class="content-title">Type:</div>
                         <div class="content">{{server.typeId}}</div>
                     </div>
                     <div class="row">
                         <div class="content-title">Status:</div>
-                        <div ng-hide="editableForm.$visible" class="content">{{server.statusId}}</div>
+                        <div class="content">{{server.statusId}}</div>
                     </div>
                     <div class="row">
                         <div class="content-title">Created Date:</div>

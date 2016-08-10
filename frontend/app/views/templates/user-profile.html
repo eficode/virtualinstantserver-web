@@ -3,8 +3,7 @@
         <form editable-form name="editableForm" onaftersave="update()">
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="setting-container">
-                        <img src="img/icon/container-fix.gif" />
+                    <div class="setting-container">                        
                         <a href="#/userlist/{{user.id}}/add_Servers" title="Add Servers" ng-show="addServers"><img src="img/icon/addvmachine.png" /></a>
                         <a href="" ng-click="editableForm.$show()" ng-show="showEdit" title="Edit"><img src="img/icon/edit.png" /></a>
                         <a href="" title="Change Password" ng-show="showChangePassword"><img src="img/icon/changerootpass.png"  data-toggle="modal" data-target="#changePasswordModal"/></a>

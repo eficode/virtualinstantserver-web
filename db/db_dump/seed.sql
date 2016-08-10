@@ -92,7 +92,7 @@ CREATE TABLE `roles_to_permissions` (
 
 LOCK TABLES `roles_to_permissions` WRITE;
 /*!40000 ALTER TABLE `roles_to_permissions` DISABLE KEYS */;
-INSERT INTO `roles_to_permissions` VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,7),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15),(1,16),(1,17),(1,18),(1,19),(1,20),(1,21),(1,22),(1,23),(1,24),(1,25),(1,26),(1,27),(1,28),(1,29),(1,30),(1,31),(2,1),(2,2),(2,3),(2,4),(2,5),(2,6),(2,7),(2,8),(2,9),(2,10),(2,11),(2,12),(2,13),(2,14),(2,15),(2,16),(2,17),(2,18),(2,19),(2,20),(2,21),(2,22),(2,23),(2,24),(2,25),(2,26),(2,27),(2,28),(2,29),(2,30),(2,31);
+INSERT INTO `roles_to_permissions` VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,7),(1,10),(1,11),(1,12),(1,13),(1,14),(1,15),(1,17),(1,18),(1,19),(1,20),(1,21),(1,22),(1,23),(1,24),(1,25),(1,26),(1,27),(1,28),(1,29),(1,30),(1,31),(2,1),(2,2),(2,3),(2,4),(2,5),(2,6),(2,7),(2,8),(2,9),(2,10),(2,11),(2,12),(2,13),(2,14),(2,15),(2,16),(2,17),(2,18),(2,19),(2,20),(2,21),(2,22),(2,23),(2,24),(2,25),(2,26),(2,27),(2,28),(2,29),(2,30),(2,31);
 /*!40000 ALTER TABLE `roles_to_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -322,7 +322,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (5,'admin','a2780bbf6ef3dc2d8f28c7b3c72905ac','Admin','TheAdmin','admin@test.com','1234567','Test Company','',2,'2016-07-08 00:00:00',0), (6,'user','a2780bbf6ef3dc2d8f28c7b3c72905ac','USer','TheUser','user@test.com','12345678','Test Company','',1,'2016-07-08 00:00:00',0) ;
+INSERT INTO `users` VALUES (5,'admin','5606cfac747c294119d148527b4cd42f','Admin','TheAdmin','admin@test.com','1234567','Test Company','',2,'2016-07-08 00:00:00',0), (6,'user','5606cfac747c294119d148527b4cd42f','USer','TheUser','user@test.com','12345678','Test Company','',1,'2016-07-08 00:00:00',0) ;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 

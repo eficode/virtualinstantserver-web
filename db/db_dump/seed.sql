@@ -322,7 +322,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (5,'oleg','qW88888888','Oleg','Mironov','test@test.com','34400','Test','',2,'2016-07-08 00:00:00',0);
+INSERT INTO `users` VALUES (5,'admin','a2780bbf6ef3dc2d8f28c7b3c72905ac','Admin','TheAdmin','admin@test.com','1234567','Test Company','',2,'2016-07-08 00:00:00',0), (6,'user','a2780bbf6ef3dc2d8f28c7b3c72905ac','USer','TheUser','user@test.com','12345678','Test Company','',1,'2016-07-08 00:00:00',0) ;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 

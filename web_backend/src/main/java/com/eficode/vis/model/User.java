@@ -1,6 +1,7 @@
 package com.eficode.vis.model;
 
 import com.eficode.vis.exception.validation.*;
+import com.eficode.vis.util.Utils;
 import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.Date;
@@ -128,7 +129,7 @@ public class User implements Serializable {
     public final void setPassword(String password) throws PasswordException {
         if(!AbstractValidate("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,45}$",password))
             throw new PasswordException();
-        this.password = password;
+        this.password = new Utils().MD5(password);
     }
 
     public String getFirstName() {

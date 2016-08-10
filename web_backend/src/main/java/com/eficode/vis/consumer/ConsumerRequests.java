@@ -1,5 +1,6 @@
 package com.eficode.vis.consumer;
 
+import com.eficode.vis.util.Utils;
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -18,8 +19,16 @@ public class ConsumerRequests {
     private final int version = 1;
     private final long userId = 1;
     private final String password = "password";
-    private final String urlBase  = "http://192.168.50.4:8080/vmservice/services";
+    private final String urlBase;
     Gson gson = new Gson();
+
+    public ConsumerRequests() {
+        if (new Utils().checkIfProductionEnvironment()) {
+            this.urlBase = "http://diyserver.office.eficode.fi:8080/vmservice/services";
+        } else {
+            this.urlBase = "http://192.168.50.4:8080/vmservice/services";
+        }
+    }
     
     public String doCreateRequest(ServerModel server) {
         HttpURLConnection con = this.createConnection("/create", server);

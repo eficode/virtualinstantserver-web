@@ -6,6 +6,7 @@ public class UserRest {
     
     private Long id;
     private String username;
+    private String rememberMe;
     private String password;
     private String firstName;
     private String secondName;
@@ -19,6 +20,7 @@ public class UserRest {
     public UserRest() {
         this.id = 0l;
         this.username = "";
+        this.rememberMe = "false";
         this.password = "";
         this.firstName = "";
         this.secondName = "";
@@ -30,10 +32,19 @@ public class UserRest {
         this.createdDate = new Date();
     }
 
-    public UserRest(Long id, String username, String password, String firstName, String secondName, String email, String phone,
+    public String getRememberMe() {
+        return rememberMe;
+    }
+
+    public void setRememberMe(String rememberMe) {
+        this.rememberMe = rememberMe;
+    }
+
+    public UserRest(Long id, String username, String rememberMe, String password, String firstName, String secondName, String email, String phone,
             String company, String description, String userRole, Date createdDate) {
         this.id = id;
         this.username = username;
+        this.rememberMe = rememberMe;
         this.password = password;
         this.firstName = firstName;
         this.secondName = secondName;
@@ -136,7 +147,7 @@ public class UserRest {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", username=" + username + ", password=" + password + ", firstName=" 
+        return "User{" + "id=" + id + ", username=" + username + ", rememberMe=" + rememberMe + ", password=" + password + ", firstName=" 
                 + firstName + ", secondName=" + secondName + ", email=" + email + ", phone=" + phone + ", company=" 
                 + company + ", description=" + description + ", createdDate=" + createdDate  + '}';
     }

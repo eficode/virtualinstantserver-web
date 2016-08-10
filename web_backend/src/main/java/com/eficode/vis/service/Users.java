@@ -6,6 +6,8 @@ import com.eficode.vis.exception.header.HeaderException;
 import com.eficode.vis.exception.header.WrongVersionException;
 import com.eficode.vis.exception.validation.ValidationException;
 import com.eficode.vis.factory.DaoFactory;
+import com.eficode.vis.jwt.JWT;
+import com.eficode.vis.model.AuthUser;
 import com.eficode.vis.model.User;
 import com.eficode.vis.model.UserRest;
 import com.eficode.vis.model.UserRole;
@@ -36,11 +38,11 @@ public class Users extends AbstractService{
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public String listUsers(@HeaderParam("version") int version, @HeaderParam("userid") long userId,@HeaderParam("password") String password,
+    public String listUsers(@HeaderParam("version") int version, @HeaderParam("userid") long userId,@HeaderParam("token") String token,
             @HeaderParam("message") String message) {
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         try {
-            incomingWrapper.HandleMessage(version,userId,password,message);
+            incomingWrapper.HandleMessage(version,userId,token,message);
         }
         catch (HeaderException e){
             return wrapper.getErrorMessage(SERVICE_TYPE, methodName, e.getMessage());
@@ -56,11 +58,11 @@ public class Users extends AbstractService{
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getUser(@PathParam("id") Long id, @HeaderParam("version") int version, @HeaderParam("userid") long userId,@HeaderParam("password") String password,
+    public String getUser(@PathParam("id") Long id, @HeaderParam("version") int version, @HeaderParam("userid") long userId,@HeaderParam("token") String token,
             @HeaderParam("message") String message) {
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         try {
-            incomingWrapper.HandleMessage(version,userId,password,message);
+            incomingWrapper.HandleMessage(version,userId,token,message);
         }
         catch (HeaderException e){
             return wrapper.getErrorMessage(SERVICE_TYPE, methodName, e.getMessage());
@@ -76,7 +78,7 @@ public class Users extends AbstractService{
     @POST
     @Path("/")
     @Consumes("application/json")
-    public String createUser(UserRest data, @HeaderParam("version") int version, @HeaderParam("userid") long userId,@HeaderParam("password") String password,
+    public String createUser(UserRest data, @HeaderParam("version") int version, @HeaderParam("userid") long userId,@HeaderParam("token") String token,
             @HeaderParam("message") String message) {
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         try {
@@ -86,14 +88,14 @@ public class Users extends AbstractService{
             return wrapper.getErrorMessage(SERVICE_TYPE, methodName, e.getMessage());
         }
         UserRole role = (new UserRoleDao()).get("user");
-        User user;
+        User user;        
         try{
             user = new User(0l,data.getUsername(), data.getPassword(), data.getFirstName(), data.getSecondName(),
                 data.getEmail(), data.getPhone(), data.getCompany(), data.getDescription(), role, new Date(), false);
         }
         catch(ValidationException e){
             return wrapper.getErrorMessage(SERVICE_TYPE, methodName, e.getMessage());
-        }
+        }        
         try{
             userDao.create(user);
         }
@@ -106,11 +108,11 @@ public class Users extends AbstractService{
     @PUT
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String updateUser(@PathParam("id") Long id, UserRest data, @HeaderParam("version") int version, @HeaderParam("userid") long userId,@HeaderParam("password") String password,
+    public String updateUser(@PathParam("id") Long id, UserRest data, @HeaderParam("version") int version, @HeaderParam("userid") long userId,@HeaderParam("token") String token,
             @HeaderParam("message") String message) {
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         try {
-            incomingWrapper.HandleMessage(version,userId,password,message);
+            incomingWrapper.HandleMessage(version,userId,token,message);
         }
         catch (HeaderException e){
             return wrapper.getErrorMessage(SERVICE_TYPE, methodName, e.getMessage());
@@ -142,11 +144,11 @@ public class Users extends AbstractService{
     
     @DELETE
     @Path("/{id}")
-    public String deleteUser(@PathParam("id") Long id, @HeaderParam("version") int version, @HeaderParam("userid") long userId,@HeaderParam("password") String password,
+    public String deleteUser(@PathParam("id") Long id, @HeaderParam("version") int version, @HeaderParam("userid") long userId,@HeaderParam("token") String token,
             @HeaderParam("message") String message) {
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         try {
-            incomingWrapper.HandleMessage(version,userId,password,message);
+            incomingWrapper.HandleMessage(version,userId,token,message);
         }
         catch (HeaderException e){
             return wrapper.getErrorMessage(SERVICE_TYPE, methodName, e.getMessage());
@@ -162,7 +164,7 @@ public class Users extends AbstractService{
     @POST
     @Path("/login")
     @Consumes("application/json")
-    public String login(UserRest data, @HeaderParam("version") int version, @HeaderParam("message") String message){
+    public String login(UserRest data, @HeaderParam("version") int version, @HeaderParam("message") String message){        
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         try {
             incomingWrapper.CheckUnauthorizesMessage(version, message);
@@ -177,21 +179,33 @@ public class Users extends AbstractService{
         } catch(ValidationException e){
             return wrapper.getErrorMessage(SERVICE_TYPE, methodName, e.getMessage());
         }
+        //base 64 password CONVERT
         user = userDao.CheckUsernamePassword(user.getUsername(), user.getPassword());
-        if (user != null)
-            return wrapper.getObjectReplySuccessMessage(user, SERVICE_TYPE, "login");
+        //base 64 password CONVERT
+        if (user != null) {
+            System.out.println(data.toString());
+            String token;
+
+            //If rememberMe is true then issue a token for two weeeks, else for 12 hrs
+            if (data.getRememberMe().equals("true")) {
+                token = new JWT().signInJwt(1209600L);
+            } else {
+                token = new JWT().signInJwt(43200L);
+            }
+            return wrapper.getObjectReplySuccessMessage(new AuthUser(user, token), SERVICE_TYPE, "login");
+        }            
         else
-            return wrapper.getErrorMessage(SERVICE_TYPE, methodName, "Username or password are not found");
+            return wrapper.getErrorMessage(SERVICE_TYPE, methodName, "Username or token are not found");
     }
     
     @GET
     @Path("/servers/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String listVMUsers(@PathParam("id") Long id, @HeaderParam("version") int version, @HeaderParam("userid") long userId,
-            @HeaderParam("password") String password, @HeaderParam("message") String message){
+            @HeaderParam("token") String token, @HeaderParam("message") String message){
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         try {
-            incomingWrapper.HandleMessage(version,userId,password,message);
+            incomingWrapper.HandleMessage(version,userId,token,message);
         }
         catch (HeaderException e){
             return wrapper.getErrorMessage(SERVICE_TYPE, methodName, e.getMessage());
@@ -208,10 +222,10 @@ public class Users extends AbstractService{
     @Path("/servers/not/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String listNotVMUsers(@PathParam("id") Long id, @HeaderParam("version") int version, @HeaderParam("userid") long userId,
-            @HeaderParam("password") String password, @HeaderParam("message") String message){
+            @HeaderParam("token") String token, @HeaderParam("message") String message){
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         try {
-            incomingWrapper.HandleMessage(version,userId,password,message);
+            incomingWrapper.HandleMessage(version,userId,token,message);
         }
         catch (HeaderException e){
             return wrapper.getErrorMessage(SERVICE_TYPE, methodName, e.getMessage());
@@ -228,10 +242,10 @@ public class Users extends AbstractService{
     @Path("/password/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public String changePassword(@PathParam("id") Long id, UserRest data, @HeaderParam("version") int version, 
-            @HeaderParam("userid") long userId,@HeaderParam("password") String password, @HeaderParam("message") String message) {
+            @HeaderParam("userid") long userId,@HeaderParam("token") String token, @HeaderParam("message") String message) {
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         try {
-            incomingWrapper.HandleMessage(version,userId,password,message);
+            incomingWrapper.HandleMessage(version,userId,token,message);
         }
         catch (HeaderException e){
             return wrapper.getErrorMessage(SERVICE_TYPE, methodName, e.getMessage());
@@ -280,11 +294,11 @@ public class Users extends AbstractService{
     @PUT
     @Path("/rights/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String changeRights(@PathParam("id") Long id, @HeaderParam("version") int version, @HeaderParam("userid") long userId,@HeaderParam("password") String password,
+    public String changeRights(@PathParam("id") Long id, @HeaderParam("version") int version, @HeaderParam("userid") long userId,@HeaderParam("token") String token,
             @HeaderParam("message") String message) {
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         try {
-            incomingWrapper.HandleMessage(version,userId,password,message);
+            incomingWrapper.HandleMessage(version,userId,token,message);
         }
         catch (HeaderException e){
             return wrapper.getErrorMessage(SERVICE_TYPE, methodName, e.getMessage());
@@ -307,11 +321,11 @@ public class Users extends AbstractService{
     
     @GET
     @Path("/roles")
-    public String listUserRoles(@HeaderParam("version") int version, @HeaderParam("userid") long userId,@HeaderParam("password") String password,
+    public String listUserRoles(@HeaderParam("version") int version, @HeaderParam("userid") long userId,@HeaderParam("token") String token,
             @HeaderParam("message") String message) {
         String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         try {
-            incomingWrapper.HandleMessage(version,userId,password,message);
+            incomingWrapper.HandleMessage(version,userId,token,message);
         }
         catch (HeaderException e){
             return wrapper.getErrorMessage(SERVICE_TYPE, methodName, e.getMessage());

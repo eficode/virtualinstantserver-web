@@ -1,8 +1,8 @@
 FROM tomcat
 
-ADD ./target/VIS-1.0-SNAPSHOT /usr/local/tomcat/webapps/
+COPY ./target/api-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/api.war
 
-COPY ./target/VIS-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/api.war
+ENV VIS_ENV docker
 
 EXPOSE 8080
 

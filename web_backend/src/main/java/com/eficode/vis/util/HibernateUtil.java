@@ -11,8 +11,7 @@ public class HibernateUtil {
     private static ServiceRegistry serviceRegistry;
     
     public static SessionFactory createSessionFactory() {
-        Configuration configuration = new Configuration();
-        configuration.configure();
+        Configuration configuration = getConfiguration();
         serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();
         sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         return sessionFactory;
@@ -24,5 +23,17 @@ public class HibernateUtil {
     
     public static void shutdown() {
         getSessionFactory().close();
+    }
+    
+    private static Configuration getConfiguration() {
+        Configuration configuration;
+        
+        if (new Utils().checkIfProductionEnvironment()) {
+           configuration = new Configuration().configure(); 
+        } else {
+           configuration = new Configuration().configure("hibernate_dev.cfg.xml"); 
+        }
+        
+        return configuration;
     }
 }

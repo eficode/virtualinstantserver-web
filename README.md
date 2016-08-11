@@ -36,6 +36,10 @@ To run back-end and front-end without docker, see *README.md* in folders.
 To run Docker containers.
 
     docker-compose up -d
+    
+To run all three containers while Front-end in production mode
+
+    docker-compose run -p 3000:3000 frontend npm run start_prod
 
 ### Accessing
 Typing the command below, you can link container's bash to local shell and access the container. Example below is for backend.

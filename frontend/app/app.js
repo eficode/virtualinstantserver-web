@@ -1,9 +1,9 @@
 (function() {
-  var app = angular.module('VIS', ['ngRoute', 'xeditable', 'apiService', 'userController', 'serverController', 'errorController', 'directives', 'truncate', 'darthwade.dwLoading'])
+  var app = angular.module('VIS', ['ngRoute', 'xeditable', 'apiService', 'userController', 'serverController', 'errorController', 'directives', 'truncate', 'darthwade.dwLoading']);
 
-  app.run(function($http, editableOptions) {
+  app.run(['editableOptions', function(editableOptions) {
     editableOptions.theme = 'bs3';
-  });
+  }]);
 
  app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
       $routeProvider.
